@@ -1,0 +1,21 @@
+{
+  "name": "stringtalk-home",
+  "version": "0.1.0",
+  "description": "stringtalk.org home",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.sr.ht/djlooop/stringtalk-home"
+  },
+  "keywords": [
+    "stringtalk",
+    "website",
+    "static",
+    "nojs"
+  ],
+  "author": "djlooop",
+  "license": "GPL-3.0-or-later"
+}

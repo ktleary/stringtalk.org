@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "https://stringtalk.org/sentitext/static/css/main.a242a29c.chunk.css",
+    "main.js": "https://stringtalk.org/sentitext/static/js/main.eb888793.chunk.js",
+    "main.js.map": "https://stringtalk.org/sentitext/static/js/main.eb888793.chunk.js.map",
+    "runtime-main.js": "https://stringtalk.org/sentitext/static/js/runtime-main.57c98331.js",
+    "runtime-main.js.map": "https://stringtalk.org/sentitext/static/js/runtime-main.57c98331.js.map",
+    "static/js/2.3b12a218.chunk.js": "https://stringtalk.org/sentitext/static/js/2.3b12a218.chunk.js",
+    "static/js/2.3b12a218.chunk.js.map": "https://stringtalk.org/sentitext/static/js/2.3b12a218.chunk.js.map",
+    "index.html": "https://stringtalk.org/sentitext/index.html",
+    "static/css/main.a242a29c.chunk.css.map": "https://stringtalk.org/sentitext/static/css/main.a242a29c.chunk.css.map",
+    "static/js/2.3b12a218.chunk.js.LICENSE.txt": "https://stringtalk.org/sentitext/static/js/2.3b12a218.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.57c98331.js",
+    "static/js/2.3b12a218.chunk.js",
+    "static/css/main.a242a29c.chunk.css",
+    "static/js/main.eb888793.chunk.js"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "https://stringtalk.org/wordshape/static/css/main.f37946ef.chunk.css",
+    "main.js": "https://stringtalk.org/wordshape/static/js/main.d6740ad3.chunk.js",
+    "main.js.map": "https://stringtalk.org/wordshape/static/js/main.d6740ad3.chunk.js.map",
+    "runtime-main.js": "https://stringtalk.org/wordshape/static/js/runtime-main.3cb03ab1.js",
+    "runtime-main.js.map": "https://stringtalk.org/wordshape/static/js/runtime-main.3cb03ab1.js.map",
+    "static/js/2.4bfa5f29.chunk.js": "https://stringtalk.org/wordshape/static/js/2.4bfa5f29.chunk.js",
+    "static/js/2.4bfa5f29.chunk.js.map": "https://stringtalk.org/wordshape/static/js/2.4bfa5f29.chunk.js.map",
+    "index.html": "https://stringtalk.org/wordshape/index.html",
+    "static/css/main.f37946ef.chunk.css.map": "https://stringtalk.org/wordshape/static/css/main.f37946ef.chunk.css.map",
+    "static/js/2.4bfa5f29.chunk.js.LICENSE.txt": "https://stringtalk.org/wordshape/static/js/2.4bfa5f29.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3cb03ab1.js",
+    "static/js/2.4bfa5f29.chunk.js",
+    "static/css/main.f37946ef.chunk.css",
+    "static/js/main.d6740ad3.chunk.js"
+  ]
+}

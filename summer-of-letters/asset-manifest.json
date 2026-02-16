@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "https://stringtalk.org/summer-of-letters/static/css/main.988f7f91.css",
+    "main.js": "https://stringtalk.org/summer-of-letters/static/js/main.431fd6f4.js",
+    "index.html": "https://stringtalk.org/summer-of-letters/index.html",
+    "main.988f7f91.css.map": "https://stringtalk.org/summer-of-letters/static/css/main.988f7f91.css.map",
+    "main.431fd6f4.js.map": "https://stringtalk.org/summer-of-letters/static/js/main.431fd6f4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.988f7f91.css",
+    "static/js/main.431fd6f4.js"
+  ]
+}

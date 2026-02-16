@@ -1,0 +1,22 @@
+p {
+  font-size: 133%;
+}
+
+.row {
+  align-content: center;
+  display: flex;
+}
+
+.cell {
+  font-size: 133%;
+  margin: 4px;
+  padding: 4px;
+}
+
+.label {
+flex: 1;
+
+}
+.description{
+  flex: 3;
+}
