@@ -1,1 +1,232 @@
-<!DOCTYPE html><html><head><link rel="stylesheet" href="https://stringtalk.org/fibonacci-times/index.52d80ad0.css"><meta charset="utf-8"><title>Fibonacci Times</title><meta name="viewport" content="width=device-width, initial-scale=1"></head><body> <div id="root"></div> <script type="module" src="https://stringtalk.org/fibonacci-times/index.6994eec1.js"></script> </body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Fibonacci Times — Stringtalk</title>
+<meta
+  name="description"
+  content="Add or subtract Fibonacci cycles (days or years) to a given date, and watch the ripple propagate."
+/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a0e12" />
+<link rel="icon" href="../favicon.ico" />
+<style>
+  :root {
+    --bg: #f0f2f3; --card: #ffffff; --fg: #1c2630; --muted: #5c6b77;
+    --accent: #a87414; --accent-soft: #f3ead6; --border: #d9dee2; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  html[data-theme="dark"] {
+    --bg: #0a0e12; --card: #10161c; --fg: #c9d4dd; --muted: #5c6b77;
+    --accent: #e8b34b; --accent-soft: #1c2630; --border: #1c2630;
+  }
+  @media (prefers-color-scheme: dark) {
+    html:not([data-theme]) { --bg: #0a0e12; --card: #10161c; --fg: #c9d4dd; --muted: #5c6b77;
+      --accent: #e8b34b; --accent-soft: #1c2630; --border: #1c2630; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+    max-width: 640px; margin-inline: auto; padding: 48px 20px 80px;
+  }
+  a { color: inherit; text-decoration: none; }
+  .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  .brand svg { color: var(--accent); flex: none; }
+  #theme-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--muted);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  #theme-btn:hover { color: var(--accent); border-color: var(--accent); }
+  h1 { font-size: 1.9rem; margin: 0 0 8px; font-weight: 650; letter-spacing: -0.02em; }
+  .lede { color: var(--muted); margin: 0 0 40px; max-width: 46ch; }
+
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px;
+    background: var(--card); margin-bottom: 32px;
+  }
+  input[type="date"], input[type="number"] {
+    font: inherit; color: var(--fg); background: var(--bg);
+    border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px;
+    color-scheme: light dark;
+  }
+  input[type="date"] { flex: 1 1 150px; }
+  input[type="number"] { width: 76px; }
+  input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  .seg { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .seg button {
+    border: 0; background: transparent; color: var(--muted); font: inherit; font-size: 14px;
+    padding: 7px 12px; cursor: pointer;
+  }
+  .seg button + button { border-left: 1px solid var(--border); }
+  .seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .cycles-label { font: 12px/1 var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+
+  .group-label {
+    font: 11px/1 var(--mono); text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--muted); margin: 0 0 12px;
+  }
+  table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+  td { background: var(--card); }
+  tr td:first-child { border: 1px solid var(--border); border-right: 0; border-radius: 12px 0 0 12px; }
+  tr td:last-child { border: 1px solid var(--border); border-left: 0; border-radius: 0 12px 12px 0; }
+  td.n {
+    font: 600 15px var(--mono); color: var(--accent);
+    padding: 12px 16px; width: 64px; text-align: right; white-space: nowrap;
+  }
+  td.d { font: 15px var(--mono); padding: 12px 16px; }
+  tr.ripple td { border-color: transparent; background: transparent; padding: 2px 16px; }
+  tr.ripple td:first-child { color: var(--muted); font-size: 11px; font-family: var(--mono); text-align: right; border: 0; }
+  tr.ripple td:last-child { color: var(--muted); font-size: 12px; border: 0; }
+  .footer {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 13px; font-family: var(--mono);
+    display: flex; justify-content: space-between;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+  <div class="top">
+    <a class="brand" href="/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6c6 4 10 8 16 12"/><path d="M4 6l2.5-2M4 6l2 2.8M20 18l-2.5 2M20 18l-2-2.8"/></svg>
+      Stringtalk
+    </a>
+    <button id="theme-btn" aria-label="Toggle theme" title="Theme: system">
+      <svg id="icon-system" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 000 18z" fill="currentColor" stroke="none"/></svg>
+      <svg id="icon-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" hidden><path d="M20 14.5A8.5 8.5 0 019.5 4a8.5 8.5 0 1010.5 10.5z"/></svg>
+      <svg id="icon-light" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" hidden><circle cx="12" cy="12" r="4.5"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12h2.5M19 12h2.5M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+    </button>
+  </div>
+
+  <h1>Fibonacci Times</h1>
+  <p class="lede">Add or subtract Fibonacci cycles to a date — a gauge for when events ripple out and dissipate.</p>
+
+  <div class="controls">
+    <input type="date" id="date" aria-label="Base date" />
+    <div class="seg" role="group" aria-label="Interval">
+      <button data-interval="days" aria-pressed="true">days</button>
+      <button data-interval="years" aria-pressed="false">years</button>
+    </div>
+    <div class="seg" role="group" aria-label="Direction">
+      <button data-operator="add" aria-pressed="true">+</button>
+      <button data-operator="subtract" aria-pressed="false">−</button>
+    </div>
+    <input type="number" id="cycles" min="1" max="30" value="10" aria-label="Number of cycles" />
+    <span class="cycles-label">cycles</span>
+  </div>
+
+  <p class="group-label" id="result-label">Result</p>
+  <table id="results" aria-live="polite"></table>
+
+  <div class="footer">
+    <span>GPL-3.0 · no ads · no tracking</span>
+    <a href="https://github.com/ktleary/stringtalk.org">source</a>
+  </div>
+
+<script>
+// ---- theme (same behavior as the homepage) ----
+(() => {
+  const root = document.documentElement, btn = document.getElementById('theme-btn');
+  const icons = { system: document.getElementById('icon-system'),
+                  dark: document.getElementById('icon-dark'),
+                  light: document.getElementById('icon-light') };
+  const next = { system: 'dark', dark: 'light', light: 'system' };
+  const modes = ['system', 'dark', 'light'];
+  let mode = localStorage.getItem('st-theme');
+  if (!modes.includes(mode)) mode = 'system';
+  const apply = (m) => {
+    mode = m;
+    if (m === 'system') root.removeAttribute('data-theme'); else root.dataset.theme = m;
+    for (const [k, el] of Object.entries(icons)) el.hidden = k !== m;
+    btn.title = `Theme: ${m}`;
+  };
+  apply(mode);
+  btn.addEventListener('click', () => { apply(next[mode]); localStorage.setItem('st-theme', mode); });
+})();
+
+// ---- fibonacci times ----
+const $ = (id) => document.getElementById(id);
+const state = {
+  date: new Date().toISOString().slice(0, 10),
+  interval: 'days',
+  operator: 'add',
+  cycles: 10,
+};
+
+const MS_DAY = 86400000;
+const MIN_MS = -8.64e15, MAX_MS = 8.64e15; // JS Date valid range (±100,000,000 days)
+
+function* fib(n) {
+  for (let a = 0, b = 1, i = 0; i < n; i++) { yield a + b; [a, b] = [b, a + b]; }
+}
+
+const offsetDate = (iso, interval, n) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  const base = Date.UTC(y, m - 1, d);
+  const ms = interval === 'days' ? base + n * MS_DAY : shiftedYearUTC(y, m, d, n);
+  if (ms < MIN_MS || ms > MAX_MS || !Number.isFinite(ms)) return null;
+  // toISOString: "YYYY-MM-DDTHH:mm..." (+/- 6-digit year beyond 9999)
+  const full = new Date(ms).toISOString().match(/^([+-]?\d+)-(\d{2}-\d{2})T/);
+  return `${full[1].padStart(4, '0')}-${full[2]}`;
+};
+
+// Shift the year by n while clamping Feb 29 -> Feb 28 on non-leap targets.
+function shiftedYearUTC(y, m, d, n) {
+  const target = y + n;
+  const dim = new Date(Date.UTC(target, m, 0)).getUTCDate(); // days in target month
+  return Date.UTC(target, m - 1, Math.min(d, dim));
+}
+
+function render() {
+  const sign = state.operator === 'add' ? 1 : -1;
+  const rows = [];
+  for (const n of fib(state.cycles)) {
+    const iso = offsetDate(state.date, state.interval, n * sign);
+    rows.push(iso === null
+      ? `<tr class="ripple"><td>${n}</td><td>out of range</td></tr>`
+      : `<tr><td class="n">${n}</td><td class="d">${iso}</td></tr>`);
+  }
+  $('results').innerHTML = rows.join('');
+  const dir = state.operator === 'add' ? '+' : '−';
+  $('result-label').textContent =
+    `${dir} ${state.interval === 'days' ? 'day' : 'year'} × fib(n) from ${state.date}`;
+}
+
+function bind() {
+  $('date').value = state.date;
+  $('date').addEventListener('change', (e) => {
+    if (e.target.value) state.date = e.target.value;
+    render();
+  });
+  $('cycles').addEventListener('change', (e) => {
+    state.cycles = Math.min(30, Math.max(1, Math.trunc(Number(e.target.value) || 1)));
+    e.target.value = state.cycles;
+    render();
+  });
+  for (const btn of document.querySelectorAll('[data-interval]')) {
+    btn.addEventListener('click', () => {
+      state.interval = btn.dataset.interval;
+      document.querySelectorAll('[data-interval]').forEach(b =>
+        b.setAttribute('aria-pressed', String(b === btn)));
+      render();
+    });
+  }
+  for (const btn of document.querySelectorAll('[data-operator]')) {
+    btn.addEventListener('click', () => {
+      state.operator = btn.dataset.operator;
+      document.querySelectorAll('[data-operator]').forEach(b =>
+        b.setAttribute('aria-pressed', String(b === btn)));
+      render();
+    });
+  }
+}
+
+bind();
+render();
+</script>
+</body>
+</html>
